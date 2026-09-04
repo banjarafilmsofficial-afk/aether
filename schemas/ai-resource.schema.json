@@ -7,65 +7,22 @@
   "additionalProperties": false,
   "required": ["resource_id", "provider", "sharing_state", "verification_state", "security_classification"],
   "properties": {
-    "resource_id": {
-      "type": "string",
-      "minLength": 1,
-      "description": "Stable Aether identifier for the resource."
-    },
-    "provider": {
-      "type": "string",
-      "minLength": 1,
-      "description": "Provider or owning system name."
-    },
-    "model": {
-      "type": ["string", "null"],
-      "description": "Model or resource name when applicable."
-    },
-    "version": {
-      "type": ["string", "null"],
-      "description": "Resource/model version when applicable."
-    },
-    "endpoint": {
-      "type": ["string", "null"],
-      "description": "Logical endpoint or access path; not an independent quota identity."
-    },
-    "ownership": {
-      "$ref": "#/$defs/ownership"
-    },
-    "quota_domain_id": {
-      "type": ["string", "null"],
-      "description": "Stable identifier for the actual quota/capacity boundary when known."
-    },
-    "sharing_state": {
-      "type": "string",
-      "enum": ["INDEPENDENT", "SHARED", "PARTIALLY_SHARED", "UNKNOWN"]
-    },
-    "capacity": {
-      "$ref": "#/$defs/capacity"
-    },
-    "capabilities": {
-      "$ref": "#/$defs/capabilities"
-    },
-    "operations": {
-      "$ref": "#/$defs/operations"
-    },
-    "economics": {
-      "$ref": "#/$defs/economics"
-    },
-    "policy": {
-      "$ref": "#/$defs/policy"
-    },
-    "security_classification": {
-      "type": "string",
-      "enum": ["LOCAL", "TRUSTED", "STANDARD", "UNKNOWN", "SENSITIVE"]
-    },
-    "provenance": {
-      "$ref": "#/$defs/provenance"
-    },
-    "verification_state": {
-      "type": "string",
-      "enum": ["DISCOVERED", "UNVERIFIED", "CERTIFIED", "DEGRADED", "QUARANTINED", "EXPIRED", "REJECTED"]
-    }
+    "resource_id": {"type": "string", "minLength": 1, "description": "Stable Aether identifier for the resource."},
+    "provider": {"type": "string", "minLength": 1, "description": "Provider or owning system name."},
+    "model": {"type": ["string", "null"], "description": "Model or resource name when applicable."},
+    "version": {"type": ["string", "null"], "description": "Resource/model version when applicable."},
+    "endpoint": {"type": ["string", "null"], "description": "Logical endpoint or access path; not an independent quota identity."},
+    "ownership": {"$ref": "#/$defs/ownership"},
+    "quota_domain_id": {"type": ["string", "null"], "description": "Stable identifier for the actual quota/capacity boundary when known."},
+    "sharing_state": {"type": "string", "enum": ["INDEPENDENT", "SHARED", "PARTIALLY_SHARED", "UNKNOWN"]},
+    "capacity": {"$ref": "#/$defs/capacity"},
+    "capabilities": {"$ref": "#/$defs/capabilities"},
+    "operations": {"$ref": "#/$defs/operations"},
+    "economics": {"$ref": "#/$defs/economics"},
+    "policy": {"$ref": "#/$defs/policy"},
+    "security_classification": {"type": "string", "enum": ["LOCAL", "TRUSTED", "STANDARD", "UNKNOWN", "SENSITIVE"]},
+    "provenance": {"$ref": "#/$defs/provenance"},
+    "verification_state": {"type": "string", "enum": ["DISCOVERED", "UNVERIFIED", "CERTIFIED", "DEGRADED", "QUARANTINED", "EXPIRED", "REJECTED"]}
   },
   "$defs": {
     "ownership": {
@@ -121,9 +78,7 @@
         "context": {"$ref": "#/$defs/capability_value"}
       }
     },
-    "capability_value": {
-      "type": ["boolean", "number", "string", "object", "null"]
-    },
+    "capability_value": {"type": ["boolean", "number", "string", "object", "null"]},
     "operations": {
       "type": "object",
       "additionalProperties": false,
@@ -172,8 +127,7 @@
         "privacy": {"type": ["string", "null"]},
         "region": {"type": ["string", "null"]},
         "tos": {"type": ["string", "null"]},
-        "permitted_workload": {"type": ["string", "null"]},
-        "security_classification": {"type": ["string", "null"]}
+        "permitted_workload": {"type": ["string", "null"]}
       }
     },
     "provenance": {
