@@ -1,0 +1,191 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://aether.dev/schemas/ai-resource.schema.json",
+  "title": "Aether AIResource v1",
+  "description": "Canonical Aether v1 representation of an AI resource.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["resource_id", "provider", "sharing_state", "verification_state", "security_classification"],
+  "properties": {
+    "resource_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Stable Aether identifier for the resource."
+    },
+    "provider": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Provider or owning system name."
+    },
+    "model": {
+      "type": ["string", "null"],
+      "description": "Model or resource name when applicable."
+    },
+    "version": {
+      "type": ["string", "null"],
+      "description": "Resource/model version when applicable."
+    },
+    "endpoint": {
+      "type": ["string", "null"],
+      "description": "Logical endpoint or access path; not an independent quota identity."
+    },
+    "ownership": {
+      "$ref": "#/$defs/ownership"
+    },
+    "quota_domain_id": {
+      "type": ["string", "null"],
+      "description": "Stable identifier for the actual quota/capacity boundary when known."
+    },
+    "sharing_state": {
+      "type": "string",
+      "enum": ["INDEPENDENT", "SHARED", "PARTIALLY_SHARED", "UNKNOWN"]
+    },
+    "capacity": {
+      "$ref": "#/$defs/capacity"
+    },
+    "capabilities": {
+      "$ref": "#/$defs/capabilities"
+    },
+    "operations": {
+      "$ref": "#/$defs/operations"
+    },
+    "economics": {
+      "$ref": "#/$defs/economics"
+    },
+    "policy": {
+      "$ref": "#/$defs/policy"
+    },
+    "security_classification": {
+      "type": "string",
+      "enum": ["LOCAL", "TRUSTED", "STANDARD", "UNKNOWN", "SENSITIVE"]
+    },
+    "provenance": {
+      "$ref": "#/$defs/provenance"
+    },
+    "verification_state": {
+      "type": "string",
+      "enum": ["DISCOVERED", "UNVERIFIED", "CERTIFIED", "DEGRADED", "QUARANTINED", "EXPIRED", "REJECTED"]
+    }
+  },
+  "$defs": {
+    "ownership": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "account": {"type": ["string", "null"]},
+        "project": {"type": ["string", "null"]},
+        "organization": {"type": ["string", "null"]},
+        "quota_domain": {"type": ["string", "null"]}
+      }
+    },
+    "capacity": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Native capacity measurements. Different dimensions are not implicitly interchangeable.",
+      "properties": {
+        "tokens": {"$ref": "#/$defs/capacity_measure"},
+        "requests": {"$ref": "#/$defs/capacity_measure"},
+        "TPM": {"$ref": "#/$defs/capacity_measure"},
+        "RPM": {"$ref": "#/$defs/capacity_measure"},
+        "TPD": {"$ref": "#/$defs/capacity_measure"},
+        "RPD": {"$ref": "#/$defs/capacity_measure"},
+        "concurrency": {"$ref": "#/$defs/capacity_measure"},
+        "credits": {"$ref": "#/$defs/capacity_measure"},
+        "compute": {"$ref": "#/$defs/capacity_measure"}
+      }
+    },
+    "capacity_measure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["unit"],
+      "properties": {
+        "unit": {"type": "string", "minLength": 1},
+        "advertised": {"type": ["number", "null"], "minimum": 0},
+        "verified": {"type": ["number", "null"], "minimum": 0},
+        "effective": {"type": ["number", "null"], "minimum": 0},
+        "remaining": {"type": ["number", "null"], "minimum": 0},
+        "reset_at": {"type": ["string", "null"], "format": "date-time"},
+        "reset_period": {"type": ["string", "null"]}
+      }
+    },
+    "capabilities": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "reasoning": {"$ref": "#/$defs/capability_value"},
+        "coding": {"$ref": "#/$defs/capability_value"},
+        "vision": {"$ref": "#/$defs/capability_value"},
+        "audio": {"$ref": "#/$defs/capability_value"},
+        "tools": {"$ref": "#/$defs/capability_value"},
+        "structured_output": {"$ref": "#/$defs/capability_value"},
+        "context": {"$ref": "#/$defs/capability_value"}
+      }
+    },
+    "capability_value": {
+      "type": ["boolean", "number", "string", "object", "null"]
+    },
+    "operations": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "latency": {"$ref": "#/$defs/metric"},
+        "throughput": {"$ref": "#/$defs/metric"},
+        "errors": {"$ref": "#/$defs/metric"},
+        "reliability": {"$ref": "#/$defs/metric"},
+        "cooldown": {"$ref": "#/$defs/metric"}
+      }
+    },
+    "metric": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "value": {"type": ["number", "null"]},
+        "unit": {"type": ["string", "null"]},
+        "observed_at": {"type": ["string", "null"], "format": "date-time"}
+      }
+    },
+    "economics": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "cost": {"$ref": "#/$defs/cost"},
+        "free": {"type": ["boolean", "null"]},
+        "recurring": {"type": ["boolean", "null"]},
+        "promotional": {"type": ["boolean", "null"]},
+        "paid": {"type": ["boolean", "null"]}
+      }
+    },
+    "cost": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "amount": {"type": ["number", "null"], "minimum": 0},
+        "currency": {"type": ["string", "null"]},
+        "unit": {"type": ["string", "null"]},
+        "basis": {"type": ["string", "null"]}
+      }
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "privacy": {"type": ["string", "null"]},
+        "region": {"type": ["string", "null"]},
+        "tos": {"type": ["string", "null"]},
+        "permitted_workload": {"type": ["string", "null"]},
+        "security_classification": {"type": ["string", "null"]}
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "source": {"type": ["string", "null"]},
+        "evidence": {"type": ["string", "null"]},
+        "timestamp": {"type": ["string", "null"], "format": "date-time"},
+        "verification": {"type": ["string", "null"]},
+        "confidence": {"type": ["number", "null"], "minimum": 0, "maximum": 1}
+      }
+    }
+  }
+}
